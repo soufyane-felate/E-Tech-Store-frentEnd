@@ -1,0 +1,32 @@
+
+.hero-section {
+  background: linear-gradient(135deg, #dff1ff 0%, #f3eaff 40%, #fdf2ff 100%);
+  min-height: 100vh;
+}
+
+.card {
+  border: none;
+  border-radius: 1rem;
+    background: linear-gradient(135deg, #dff1ff 0%, #f3eaff 40%, #fdf2ff 100%);
+
+}
+
+.card mat-icon {
+  font-size: 36px;
+}
+.card-hover:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section .lead {
+    font-size: 1rem;
+  }
+}

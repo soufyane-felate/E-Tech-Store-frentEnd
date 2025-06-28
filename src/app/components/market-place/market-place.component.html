@@ -1,0 +1,35 @@
+<div class="container my-4">
+  <h2 class="text-center fw-bold mb-4">Produits en Vedette</h2>
+  <div class="row g-4">
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let product of products">
+      <mat-card class="h-100 shadow-sm product-card">
+       
+        <img mat-card-image [src]="product.image || 'https://i.pinimg.com/736x/a2/9e/a1/a29ea132cb71b62cffbddcabf944aea5.jpg'"
+          alt="{{ product.name }}" class="img-fluid rounded-top medium-img" />
+
+        <mat-card-header>
+          <div mat-card-avatar class="badge-container">
+            <span class="badge bg-success">{{ product.etat }}</span>
+          </div>
+          <mat-card-title>{{ product.name }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p class="text-muted mb-2">{{ product.description }}</p>
+          <h5 class="text-primary">{{ product.price }}€</h5>
+          <div class="d-flex align-items-center mb-2">
+            <mat-icon color="warn">star</mat-icon>
+            <span class="ms-1">4.8 (1021)</span>
+          </div>
+          <small class="text-muted">par {{ product.categorie }}</small>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-raised-button color="primary" class="w-100">Voir Détails</button>
+        </mat-card-actions>
+
+      </mat-card>
+
+    </div>
+  </div>
+</div>
