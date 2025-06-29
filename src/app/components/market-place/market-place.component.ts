@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-market-place',
@@ -33,7 +34,9 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatButtonModule,
     FormsModule,
-  ],
+    NavbarComponent,
+    NavbarComponent
+],
   templateUrl: './market-place.component.html',
   styleUrl: './market-place.component.css',
 })
@@ -42,7 +45,7 @@ export class MarketPlaceComponent implements OnInit {
   filteredProducts: ProductDto[] = [];
   showAddForm = false;
 
-  imageInputType: 'url' | 'upload' = 'url'; // default
+  imageInputType: 'url' | 'upload' = 'url';
   newProduct: ProductDto = {
     name: '',
     image: '',
@@ -72,7 +75,6 @@ export class MarketPlaceComponent implements OnInit {
     this.showAddForm = !this.showAddForm;
   }
 
-  // 👇 Handle file input and convert to Base64
   onFileSelected(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
@@ -80,7 +82,7 @@ export class MarketPlaceComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.newProduct.image = reader.result as string; // base64 string
+        this.newProduct.image = reader.result as string;
       };
 
       reader.readAsDataURL(file);
