@@ -1,10 +1,111 @@
 <div class="container my-4">
   <h2 class="text-center fw-bold mb-4">Produits en Vedette</h2>
+
+  <!-- Search Bar -->
+  <div class="row">
+    <div class="col-md-12">
+      <form class="d-flex" (submit)="$event.preventDefault()">
+        <div class="input-group">
+          <input class="form-control form-control-lg" type="search" placeholder="Search" [(ngModel)]="searchTerm"
+            (ngModelChange)="filterProduct()" name="searchTerm" aria-label="Search" />
+          <button class="btn btn-primary px-4" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Filter and Sell Buttons -->
+  <div class="d-flex justify-content-center align-items-center gap-3 my-4">
+    <button type="button" class="btn btn-dark" (click)="toggleForm()">Sell</button>
+    <button type="button" class="btn btn-dark">Dark</button>
+    <select class="form-select form-select-sm w-auto" [(ngModel)]="selectedCategory" (ngModelChange)="filterProduct()"
+      name="selectedCategory">
+      <option value="">Categorie</option>
+      <option value="SMARTPHONE">SMARTPHONE</option>
+      <option value="COMPUTER">COMPUTER</option>
+      <option value="TABLET">TABLET</option>
+      <option value="TELEVISION">TELEVISION</option>
+      <option value="OTHER">OTHER</option>
+    </select>
+  </div>
+
+  <!-- Add Product Form -->
+  <div *ngIf="showAddForm" class="container my-3">
+    <h3>Add Product</h3>
+    <form (ngSubmit)="submitProduct()" class="row g-3">
+      <div class="col-md-6">
+        <input [(ngModel)]="newProduct.name" name="name" type="text" class="form-control" placeholder="Product Name"
+          required />
+      </div>
+
+      <!-- Image Input Option -->
+      <div class="col-md-12">
+        <label class="form-label">Image Source</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="imageInputType" value="url" [(ngModel)]="imageInputType" />
+          <label class="form-check-label">Use Image URL</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="imageInputType" value="upload"
+            [(ngModel)]="imageInputType" />
+          <label class="form-check-label">Upload from Device</label>
+        </div>
+      </div>
+
+      <!-- Image URL Input -->
+      <div class="col-md-6" *ngIf="imageInputType === 'url'">
+        <input [(ngModel)]="newProduct.image" name="image" type="text" class="form-control" placeholder="Image URL" />
+      </div>
+
+      <!-- Image Upload Input -->
+      <div class="col-md-6" *ngIf="imageInputType === 'upload'">
+        <input type="file" class="form-control" (change)="handleFileInput($event)" accept="image/*" />
+      </div>
+
+      <div class="col-12">
+        <textarea [(ngModel)]="newProduct.description" name="description" class="form-control"
+          placeholder="Description"></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <input [(ngModel)]="newProduct.price" name="price" type="number" class="form-control" placeholder="Price"
+          required />
+      </div>
+
+      <div class="col-md-6">
+        <select [(ngModel)]="newProduct.categorie" class="form-select" name="categorie" required>
+          <option [ngValue]="undefined" disabled selected>Select Category</option>
+          <option value="SMARTPHONE">Smartphone</option>
+          <option value="COMPUTER">Computer</option>
+          <option value="TABLET">Tablet</option>
+          <option value="TELEVISION">Television</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <select [(ngModel)]="newProduct.etat" class="form-select" name="etat" required>
+          <option [ngValue]="undefined" disabled selected>Select State</option>
+          <option value="NEW">New</option>
+          <option value="USED">Used</option>
+          <option value="RECONDITIONED">Reconditioned</option>
+        </select>
+      </div>
+
+      <div class="col-12 text-end">
+        <button class="btn btn-success" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Product Cards -->
   <div class="row g-4">
-    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let product of products">
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let product of filteredProducts">
       <mat-card class="h-100 shadow-sm product-card">
-       
-        <img mat-card-image [src]="product.image || 'https://i.pinimg.com/736x/a2/9e/a1/a29ea132cb71b62cffbddcabf944aea5.jpg'"
+        <img mat-card-image
+          [src]="product.image || 'https://i.pinimg.com/736x/a2/9e/a1/a29ea132cb71b62cffbddcabf944aea5.jpg'"
           alt="{{ product.name }}" class="img-fluid rounded-top medium-img" />
 
         <mat-card-header>
@@ -15,21 +116,15 @@
         </mat-card-header>
 
         <mat-card-content>
-          <p class="text-muted mb-2">{{ product.description }}</p>
-          <h5 class="text-primary">{{ product.price }}€</h5>
-          <div class="d-flex align-items-center mb-2">
-            <mat-icon color="warn">star</mat-icon>
-            <span class="ms-1">4.8 (1021)</span>
-          </div>
+          <p class="truncate-2-lines">{{ product.description }}</p>
+          <h5 class="text-primary">{{ product.price }} DH</h5>
           <small class="text-muted">par {{ product.categorie }}</small>
         </mat-card-content>
 
         <mat-card-actions>
           <button mat-raised-button color="primary" class="w-100">Voir Détails</button>
         </mat-card-actions>
-
       </mat-card>
-
     </div>
   </div>
 </div>

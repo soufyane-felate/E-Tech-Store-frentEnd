@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 export interface ProductDto {
-    "name": String,
-    "image": String,
-    "description": String,
-    "price":number ,
-    "categorie": String,
-    "etat": String
+  name: String;
+  image: String;
+  description: String;
+  price: number;
+  categorie: String;
+  etat: String;
 }
 
 @Injectable({
@@ -25,4 +25,5 @@ export class ProductListService {
   addProduct(product: ProductDto): Observable<ProductDto> {
     return this.http.post<ProductDto>(this.url, product);
   }
+
 }
