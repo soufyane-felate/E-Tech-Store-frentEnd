@@ -1,0 +1,59 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css";
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #dff1ff 0%, #f3eaff 40%, #fdf2ff 100%);
+}
+
+.login-container {
+  animation: fadeInDown;
+  animation-duration: 1s;
+  width: 100%;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.welcome-section {
+  padding: 40px;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  padding: 40px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-raised-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.google-btn {
+  background-color: #db4437;
+  color: white;
+}
+
+.google-btn .fa-google {
+  margin-right: 10px;
+}
+
+.register-link {
+  margin-top: 20px;
+}

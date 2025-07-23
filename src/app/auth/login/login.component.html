@@ -1,0 +1,39 @@
+
+<div class="login-container">
+  <div class="row">
+    <div class="col-md-6 welcome-section animate__animated animate__fadeInLeft">
+      <h2>Welcome Back!</h2>
+      <p>Please login to continue.</p>
+    </div>
+    <div class="col-md-6 login-form">
+      <h2 class="text-center mb-4">Login</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="mb-3">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Enter your email" required>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+            Enter a valid email address
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mb-3">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Enter password" required>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="mb-3" [disabled]="!loginForm.valid">Login</button>
+      </form>
+
+      <div class="text-center register-link">
+        <p>Don't have an account? <a routerLink="/register">Register</a></p>
+      </div>
+    </div>
+  </div>
+</div>

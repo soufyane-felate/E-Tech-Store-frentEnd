@@ -3,7 +3,6 @@
 <div class="container my-4">
   <h2 class="text-center fw-bold mb-4">Produits en Vedette</h2>
 
-  <!-- Search Bar -->
   <div class="row">
     <div class="col-md-12">
       <form class="d-flex" (submit)="$event.preventDefault()">
@@ -18,7 +17,6 @@
     </div>
   </div>
 
-  <!-- Filter and Sell Buttons -->
   <div class="d-flex justify-content-center align-items-center gap-3 my-4">
     <button type="button" class="btn btn-dark" (click)="toggleForm()">Sell</button>
     <button type="button" class="btn btn-dark">Dark</button>
@@ -33,7 +31,6 @@
     </select>
   </div>
 
-  <!-- Add Product Form -->
   <div *ngIf="showAddForm" class="container my-3">
     <h3>Add Product</h3>
     <form (ngSubmit)="submitProduct()" class="row g-3">
@@ -42,7 +39,6 @@
           required />
       </div>
 
-      <!-- Image Input Option -->
       <div class="col-md-12">
         <label class="form-label">Image Source</label>
         <div class="form-check form-check-inline">
@@ -56,12 +52,10 @@
         </div>
       </div>
 
-      <!-- Image URL Input -->
       <div class="col-md-6" *ngIf="imageInputType === 'url'">
         <input [(ngModel)]="newProduct.image" name="image" type="text" class="form-control" placeholder="Image URL" />
       </div>
 
-      <!-- Image Upload Input -->
       <div class="col-md-6" *ngIf="imageInputType === 'upload'">
         <input type="file" class="form-control" (change)="handleFileInput($event)" accept="image/*" />
       </div>
@@ -102,7 +96,6 @@
     </form>
   </div>
 
-  <!-- Product Cards -->
   <div class="row g-4">
     <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let product of filteredProducts">
       <mat-card class="h-100 shadow-sm product-card">
