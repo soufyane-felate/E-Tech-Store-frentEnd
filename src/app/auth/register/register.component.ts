@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { Role } from '../user'; // Import Role enum
+import { Role } from '../user';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', Validators.required] // Role is now required and selected by user
+      role: ['', Validators.required]
     });
   }
 
@@ -39,16 +39,14 @@ export class RegisterComponent implements OnInit {
       this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          this.router.navigate(['/home']); // Navigate to home after successful registration
+          this.router.navigate(['/home']);
         },
         error: (error) => {
           console.error('Registration failed', error);
-          // Handle registration error (e.g., display error message to user)
         }
       });
     } else {
       console.log('Form is invalid');
-      // Optionally, mark all fields as touched to display validation errors
       this.registerForm.markAllAsTouched();
     }
   }

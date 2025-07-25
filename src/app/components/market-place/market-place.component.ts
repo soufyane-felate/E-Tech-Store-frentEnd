@@ -90,18 +90,27 @@ export class MarketPlaceComponent implements OnInit {
   }
 
   submitProduct() {
-    this.productService.addProduct(this.newProduct).subscribe(() => {
-      this.loadProducts();
-      this.newProduct = {
-        name: '',
-        image: '',
-        description: '',
-        price: 0,
-        categorie: '',
-        etat: '',
-      };
-      this.imageInputType = 'url';
-      this.showAddForm = false;
+    this.productService.addProduct(this.newProduct).subscribe({
+      next: () => {
+        this.loadProducts();
+        this.newProduct = {
+          name: '',
+          image: '',
+          description: '',
+          price: 0,
+          categorie: '',
+          etat: '',
+        };
+        this.imageInputType = 'url';
+        this.showAddForm = false;
+      },
+      error: (error) => {
+        if (error.status === 403) {
+          console.error('Error 403: Forbidden. Check user permissions or token validity.', error);
+        } else {
+          console.error('Error submitting product:', error);
+        }
+      }
     });
   }
 

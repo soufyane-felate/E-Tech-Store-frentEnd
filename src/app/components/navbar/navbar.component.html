@@ -5,16 +5,29 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <ng-container *ngIf="isLoggedIn">
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav d-flex flex-lg-row gap-lg-3 text-center">
+          <li *ngFor="let item of navItems" class="nav-item">
+            <a class="nav-link text-light" [routerLink]="item.link" routerLinkActive="active">
+              {{ item.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isLoggedIn">
+<div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+  <ul class="navbar-nav d-flex flex-lg-row gap-lg-3 text-center">
+    <li *ngFor="let item of navItemslogin" class="nav-item">
+      <a class="nav-link text-light" [routerLink]="item.link" routerLinkActive="active">
+        {{ item.label }}
+      </a>
+    </li>
+  </ul>
+</div>
+    </ng-container>
 
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav d-flex flex-lg-row gap-lg-3 text-center">
-        <li *ngFor="let item of navItems" class="nav-item">
-          <a class="nav-link text-light" [routerLink]="item.link" routerLinkActive="active">
-            {{ item.label }}
-          </a>
-        </li>
-      </ul>
-    </div>
 
     <div class="d-none d-lg-block">
       <ng-container *ngIf="!isLoggedIn">

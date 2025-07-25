@@ -11,11 +11,15 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.authService.getToken();
 
     if (token) {
+      console.log('AuthInterceptor: Token found, adding to headers.');
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log('AuthInterceptor: Request headers after adding token:', request.headers.get('Authorization'));
+    } else {
+      console.log('AuthInterceptor: No token found.');
     }
 
     return next.handle(request);

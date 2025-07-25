@@ -12,7 +12,7 @@ import { User } from '../../auth/user';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  isLoggedIn: boolean = false;
+  isLoggedIn: boolean = localStorage.getItem('token') !== null;
   currentUser: User | null = null;
 
   constructor(private authService: AuthService) {}
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser.subscribe((user: User | null) => {
       this.currentUser = user;
-      this.isLoggedIn = !!user;
+      //this.isLoggedIn = !!user;
     });
   }
 
@@ -31,8 +31,13 @@ export class NavbarComponent implements OnInit {
     { label: 'Products', link: '/products' },
     { label: 'Profile', link: '/profile' },
   ];
+  navItemslogin = [
+    { label: 'Home', link: '/home' },
+  
+  ];
 
   logout(): void {
+    this.isLoggedIn = false;
     this.authService.logout();
   }
 }
