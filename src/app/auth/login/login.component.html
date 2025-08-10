@@ -29,6 +29,10 @@
         </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" class="mb-3" [disabled]="!loginForm.valid">Login</button>
+
+        <mat-error *ngIf="loginError">
+          {{ loginError }}
+        </mat-error>
       </form>
 
       <div class="text-center register-link">

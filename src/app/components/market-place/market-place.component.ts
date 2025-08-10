@@ -11,12 +11,11 @@ import {
   NgIf,
 } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../navbar/navbar.component";
+import { AuthService } from "../../auth/auth.service";
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-market-place',
@@ -29,13 +28,11 @@ import { NavbarComponent } from "../navbar/navbar.component";
     CurrencyPipe,
     RouterLink,
     RouterModule,
-    MatIconModule,
     HttpClientModule,
-    MatCardModule,
-    MatButtonModule,
     FormsModule,
     NavbarComponent,
-    NavbarComponent
+    NavbarComponent,
+    MatCardModule
 ],
   templateUrl: './market-place.component.html',
   styleUrl: './market-place.component.css',
@@ -47,6 +44,7 @@ export class MarketPlaceComponent implements OnInit {
 
   imageInputType: 'url' | 'upload' = 'url';
   newProduct: ProductDto = {
+    id: '',
     name: '',
     image: '',
     description: '',
@@ -58,7 +56,7 @@ export class MarketPlaceComponent implements OnInit {
   searchTerm: string = '';
   selectedCategory: string = '';
 
-  constructor(private productService: ProductListService) {}
+  constructor(private productService: ProductListService, private authService: AuthService) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -94,6 +92,7 @@ export class MarketPlaceComponent implements OnInit {
       next: () => {
         this.loadProducts();
         this.newProduct = {
+          id: '',
           name: '',
           image: '',
           description: '',
@@ -140,6 +139,14 @@ export class MarketPlaceComponent implements OnInit {
       };
       reader.readAsDataURL(fileInput.files[0]);
     }
+  }
+  productDetails(product: ProductDto) {
+    product.image;
+    product.name;
+    product.description;
+    product.price;
+    product.categorie;
+    product.etat;
   }
 }
 

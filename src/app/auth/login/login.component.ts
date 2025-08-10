@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  loginError: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -35,10 +36,12 @@ export class LoginComponent implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login successful', response);
+          this.loginError = '';
           this.router.navigate(['/home']);
         },
         error: (error) => {
           console.error('Login failed', error);
+          this.loginError = 'Invalid email or password';
         }
       });
     } else {

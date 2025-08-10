@@ -27,13 +27,11 @@ export class NavbarComponent implements OnInit {
   navItems = [
     { label: 'Home', link: '/home' },
     { label: 'Market Place', link: '/marketPlace' },
-    { label: 'Repair', link: '/repair' },
-    { label: 'Products', link: '/products' },
     { label: 'Profile', link: '/profile' },
   ];
   navItemslogin = [
     { label: 'Home', link: '/home' },
-  
+
   ];
 
   logout(): void {

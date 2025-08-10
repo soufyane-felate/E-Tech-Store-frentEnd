@@ -1,4 +1,3 @@
-
 <app-navbar></app-navbar>
 <div class="container my-4">
   <h2 class="text-center fw-bold mb-4">Produits en Vedette</h2>
@@ -116,9 +115,9 @@
           <small class="text-muted">par {{ product.categorie }}</small>
         </mat-card-content>
 
-        <mat-card-actions>
-          <button mat-raised-button color="primary" class="w-100">Voir Détails</button>
-        </mat-card-actions>
+<br>
+          <button class="btn btn-primary" [routerLink]="['/product-details', product.id]">product details</button>
+
       </mat-card>
     </div>
   </div>

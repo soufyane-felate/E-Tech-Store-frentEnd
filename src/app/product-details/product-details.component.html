@@ -1,0 +1,35 @@
+<div *ngIf="productFound; else notFound">
+  <div *ngIf="product" class="product-details-container">
+    <div class="product-card">
+      <div class="product-image-container">
+        <img class="product-image" [src]="product.image" alt="{{ product.name }}" />
+      </div>
+      <div class="product-info">
+        <h1 class="product-name">{{ product.name }}</h1>
+        <p class="product-description">{{ product.description }}</p>
+        <p class="product-price">{{ product.price | currency: 'USD' }}</p>
+        <div class="product-meta">
+          <div class="meta-item">
+            <span class="meta-label">Category</span>
+            <span class="meta-value">{{ product.categorie }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Condition</span>
+            <span class="meta-value">{{ product.etat }}</span>
+          </div>
+        </div>
+        <div class="product-actions">
+          <button class="btn btn-primary" (click)="addToCart()">Add to Cart</button>
+          <button class="btn btn-secondary" (click)="goBack()">Back to Marketplace</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found-container">
+    <p>Product not found.</p>
+    <button class="btn btn-secondary" (click)="goBack()">Back to Marketplace</button>
+  </div>
+</ng-template>
