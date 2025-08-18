@@ -7,8 +7,8 @@ import { User } from './user';
   providedIn: 'root',
 })
 export class AuthService {
-  private registerUrl = 'http://localhost:8085/api/v1/auth/register';
-  private loginUrl = 'http://localhost:8085/api/v1/auth/authenticate';
+  private registerUrl = 'http://localhost:8080/api/v1/auth/register';
+  private loginUrl = 'http://localhost:8080/api/v1/auth/authenticate';
 
   private userSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;

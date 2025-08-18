@@ -9,6 +9,5 @@ export interface User {
 
 export enum Role {
   ADMIN = 'ADMIN',
-  REPAIRMAN = 'REPAIRMAN',
   CLIENT = 'CLIENT'
 }

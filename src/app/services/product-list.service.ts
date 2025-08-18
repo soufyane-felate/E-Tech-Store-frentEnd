@@ -15,7 +15,7 @@ export interface ProductDto {
   providedIn: 'root',
 })
 export class ProductListService {
-  private url = 'http://localhost:8085/api/product';
+  private url = 'http://localhost:8080/api/product';
 
   constructor(private http: HttpClient) {}
 

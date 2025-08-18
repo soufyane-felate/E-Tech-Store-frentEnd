@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductDto, ProductListService } from '../services/product-list.service';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -18,6 +19,7 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductListService,
+    private cartService: CartService,
     private router: Router
   ) {}
 
@@ -41,12 +43,36 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
+  // addToCart(): void {
+  //   if (this.product) {
+  //     this.cartService.addToCart(this.product.id, 1).subscribe({
+  //       next: () => {
+  //         console.log('Product added to cart successfully');
+  //       },
+  //       error: (error) => {
+  //         console.error('Error adding product to cart:', error);
+  //       }
+  //     });
+  //   }
+  // }
   addToCart(): void {
-    console.log('Add to cart clicked for product:', this.product?.name);
+    if (this.product) {
+      this.cartService.addToCart(this.product.id, 1).subscribe({
+        next: () => {
+          alert('Product added to cart');
+        },
+        error: (err) => {
+          console.error('Error adding to cart:', err);
+          alert('Failed to add product to cart.');
+        }
+      });
+
+    }
   }
 
   goBack(): void {
     this.router.navigate(['/marketPlace']);
   }
 }
+
 

@@ -1,1 +1,47 @@
-<p>cart works!</p>
+<div class="container mt-5">
+  <div *ngIf="cartItems.length > 0; else emptyCart">
+    <h2>Your Cart</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.product.price | currency: 'USD' }}</td>
+          <td>
+            <button class="btn btn-sm btn-secondary" (click)="decreaseQuantity(item)" [disabled]="updatingItemId === item.product.id">-</button>
+            <span class="mx-2">{{ item.quantity }}</span>
+            <button class="btn btn-sm btn-secondary" (click)="increaseQuantity(item)" [disabled]="updatingItemId === item.product.id">+</button>
+          </td>
+          <td>{{ (item.product.price * item.quantity) | currency: 'USD' }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="removeItem(item)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center">
+      <button class="btn btn-danger" (click)="clearCart()">Clear Cart</button>
+      <div class="text-end">
+        <h4>Total: {{ totalPrice | currency: 'USD' }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="text-center">
+      <i class="bi bi-cart-x" style="font-size: 5rem;"></i>
+      <h3>Your cart is empty.</h3>
+      <p>Add some products to get started.</p>
+    </div>
+  </ng-template>
+</div>
