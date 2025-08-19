@@ -1,38 +1,52 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
 <div class="container mt-5">
   <div *ngIf="cartItems.length > 0; else emptyCart">
     <h2>Your Cart</h2>
     <table class="table table-striped">
       <thead>
-        <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Total</th>
-          <th></th>
-        </tr>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of cartItems">
-          <td>{{ item.product.name }}</td>
-          <td>{{ item.product.price | currency: 'USD' }}</td>
-          <td>
-            <button class="btn btn-sm btn-secondary" (click)="decreaseQuantity(item)" [disabled]="updatingItemId === item.product.id">-</button>
-            <span class="mx-2">{{ item.quantity }}</span>
-            <button class="btn btn-sm btn-secondary" (click)="increaseQuantity(item)" [disabled]="updatingItemId === item.product.id">+</button>
-          </td>
-          <td>{{ (item.product.price * item.quantity) | currency: 'USD' }}</td>
-          <td>
-            <button class="btn btn-sm btn-danger" (click)="removeItem(item)">
-              <i class="bi bi-trash"></i>
+      <tr *ngFor="let item of cartItems">
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.product.price | currency: 'USD' }}</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <button class="btn btn-outline-secondary btn-sm"
+                    (click)="decreaseQuantity(item)"
+                    [disabled]="updatingItemId === item.product.id">
+              <i class="bi bi-dash"></i>
             </button>
-          </td>
-        </tr>
+            <span class="mx-2">{{ item.quantity }}</span>
+            <button class="btn btn-outline-secondary btn-sm"
+                    (click)="increaseQuantity(item)"
+                    [disabled]="updatingItemId === item.product.id">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </td>
+        <td>{{ (item.product.price * item.quantity) | currency: 'USD' }}</td>
+        <td>
+          <button class="btn btn-sm btn-danger" (click)="removeItem(item)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
       </tbody>
     </table>
-    <div class="d-flex justify-content-between align-items-center">
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
       <button class="btn btn-danger" (click)="clearCart()">Clear Cart</button>
       <div class="text-end">
         <h4>Total: {{ totalPrice | currency: 'USD' }}</h4>
+        <button class="btn btn-primary" (click)="checkout()">Proceed to Checkout</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService, CartItem, Cart } from '../../services/cart.service';
+import { CartService, CartItem } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +15,7 @@ export class CartComponent implements OnInit {
   totalPrice: number = 0;
   updatingItemId: string | null = null;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -22,81 +23,65 @@ export class CartComponent implements OnInit {
 
   loadCart(): void {
     this.cartService.getCartItems().subscribe({
-      next: (data: Cart) => {
-        console.log('Cart items:', data);
+      next: (data) => {
         this.cartItems = data.items;
-        this.totalPrice = data.totalPrice;
+        this.calculateTotalPrice();
       },
-      error: (err) => {
-        console.error('Error fetching cart items:', err);
-      }
+      error: (err) => console.error('Error fetching cart items:', err)
     });
   }
 
+  calculateTotalPrice(): void {
+    this.totalPrice = this.cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  }
+
   increaseQuantity(item: CartItem): void {
-    if (this.updatingItemId !== null) return;
+    if (this.updatingItemId) return;
 
     this.updatingItemId = item.product.id;
+    const newQuantity = item.quantity + 1;
 
-    item.quantity += 1;
-    this.totalPrice += item.product.price;
-
-    this.cartService.updateCartItem(item.product.id, item.quantity).subscribe({
-      next: (data) => {
+    this.cartService.updateCartItem(item.product.id, newQuantity).subscribe({
+      next: () => {
+        item.quantity = newQuantity;
+        this.calculateTotalPrice();
       },
-      error: (err) => {
-        console.error('Error updating cart:', err);
-        item.quantity -= 1;
-        this.totalPrice -= item.product.price;
-      },
-      complete: () => {
-        this.updatingItemId = null;
-      }
+      error: (err) => console.error('Error updating cart:', err),
+      complete: () => this.updatingItemId = null
     });
   }
 
   decreaseQuantity(item: CartItem): void {
-    if (this.updatingItemId !== null || item.quantity <= 1) return;
+    if (this.updatingItemId || item.quantity <= 1) return;
 
     this.updatingItemId = item.product.id;
+    const newQuantity = item.quantity - 1;
 
-    item.quantity -= 1;
-    this.totalPrice -= item.product.price;
-
-    this.cartService.updateCartItem(item.product.id, item.quantity).subscribe({
-      next: (data) => {},
-      error: (err) => {
-        console.error('Error updating cart:', err);
-        item.quantity += 1;
-        this.totalPrice += item.product.price;
+    this.cartService.updateCartItem(item.product.id, newQuantity).subscribe({
+      next: () => {
+        item.quantity = newQuantity;
+        this.calculateTotalPrice();
       },
-      complete: () => {
-        this.updatingItemId = null;
-      }
+      error: (err) => console.error('Error updating cart:', err),
+      complete: () => this.updatingItemId = null
     });
   }
 
-
   removeItem(item: CartItem): void {
     this.cartService.removeCartItem(item.product.id).subscribe({
-      next: () => {
-        this.loadCart();
-      },
-      error: (err) => {
-        console.error('Error removing item from cart:', err);
-        console.error('Full error object:', JSON.stringify(err, null, 2));
-      }
+      next: () => this.loadCart(),
+      error: (err) => console.error('Error removing item from cart:', err)
     });
   }
 
   clearCart(): void {
     this.cartService.clearCart().subscribe({
-      next: () => {
-        this.loadCart();
-      },
-      error: (err) => {
-        console.error('Error clearing cart:', err);
-      }
+      next: () => this.loadCart(),
+      error: (err) => console.error('Error clearing cart:', err)
     });
+  }
+
+  checkout(): void {
+    this.router.navigate(['/checkout']);
   }
 }

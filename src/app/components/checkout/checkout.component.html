@@ -1,0 +1,54 @@
+<div class="container mt-5">
+  <h2>Checkout</h2>
+
+  <div *ngIf="cartItems.length > 0; else emptyCart">
+    <h3>Order Summary</h3>
+    <ul class="list-group mb-3">
+      <li class="list-group-item d-flex justify-content-between lh-condensed"
+          *ngFor="let item of cartItems">
+        <div>
+          <h6 class="my-0">{{ item.product.name }}</h6>
+          <small class="text-muted">Quantity: {{ item.quantity }}</small>
+        </div>
+        <span class="text-muted">{{ (item.product.price * item.quantity) | currency:'USD' }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between">
+        <span>Total (USD)</span>
+        <strong>{{ totalPrice | currency:'USD' }}</strong>
+      </li>
+    </ul>
+
+    <h3>Payment Information</h3>
+    <div class="card p-3">
+      <div class="mb-3">
+        <label for="cardNumber" class="form-label">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" placeholder="**** **** **** ****">
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="expirationDate" class="form-label">Expiration Date</label>
+          <input type="text" class="form-control" id="expirationDate" placeholder="MM/YY">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="cvv" class="form-label">CVV</label>
+          <input type="text" class="form-control" id="cvv" placeholder="123">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="cardName" class="form-label">Name on Card</label>
+        <input type="text" class="form-control" id="cardName" placeholder="Full Name">
+      </div>
+      <button class="btn btn-primary btn-lg btn-block" (click)="processPayment()">
+        Process Payment
+      </button>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="text-center">
+      <i class="bi bi-cart-x" style="font-size: 5rem;"></i>
+      <h3>Your cart is empty.</h3>
+      <p>Please add items to your cart before proceeding to checkout.</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,7 +1,13 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ProductDto } from './product-list.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+export interface ProductDto {
+  id: string;
+  name: string;
+  price: number;
+}
 
 export interface CartItem {
   product: ProductDto;
@@ -20,28 +26,54 @@ export interface Cart {
 })
 export class CartService {
   private baseUrl = 'http://localhost:8080/api/v1/cart';
+  private cartSubject: BehaviorSubject<Cart> = new BehaviorSubject<Cart>({
+    id: 0,
+    userEmail: null,
+    items: [],
+    totalPrice: 0
+  });
+  public cart$: Observable<Cart> = this.cartSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadCart();
+  }
 
-  addToCart(productId: string, quantity: number): Observable<any> {
+  private loadCart(): void {
+    this.getCartItems().subscribe({
+      next: (cart) => this.cartSubject.next(cart),
+      error: () => this.cartSubject.next({
+        id: 0, userEmail: null, items: [], totalPrice: 0
+      })
+    });
+  }
+
+  addToCart(productId: string, quantity: number): Observable<Cart> {
     const payload = { productId, quantity };
-    return this.http.post(`${this.baseUrl}/add`, payload);
+    return this.http.post<Cart>(`${this.baseUrl}/add`, payload).pipe(
+      tap(cart => this.cartSubject.next(cart))
+    );
   }
 
   getCartItems(): Observable<Cart> {
     return this.http.get<Cart>(this.baseUrl);
   }
 
-  updateCartItem(productId: string, quantity: number): Observable<any> {
-    const payload = { productId, quantity };
-    return this.http.put(`${this.baseUrl}/update`, payload);
+  updateCartItem(productId: string, quantity: number): Observable<void> {
+    const payload = { productId: Number(productId), quantity };
+    return this.http.put<void>(`${this.baseUrl}/update`, payload);
   }
 
-  removeCartItem(productId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/item/${productId}`);
+  removeCartItem(productId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/delete/item/${productId}`).pipe(
+      tap(() => this.loadCart())
+    );
   }
 
   clearCart(): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/clear`);
+    return this.http.delete(`${this.baseUrl}/clear`).pipe(
+      tap(() => this.cartSubject.next({
+        id: 0, userEmail: null, items: [], totalPrice: 0
+      }))
+    );
   }
 }
