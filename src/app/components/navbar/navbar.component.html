@@ -34,7 +34,6 @@
         <a class="navbar-brand" routerLink="/login">Login</a>
       </ng-container>
       <ng-container *ngIf="isLoggedIn">
-        <a class="navbar-brand" routerLink="/profile">{{ currentUser?.name }}</a>
         <button class="btn btn-link text-light" (click)="logout()">Logout</button>
       </ng-container>
     </div>

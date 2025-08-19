@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
-export interface ProductDto {
-  id: string;
-  name: string;
-  price: number;
-}
+import { ProductDto } from './product-list.service'; // Import ProductDto
 
 export interface CartItem {
   product: ProductDto;

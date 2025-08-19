@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
     { label: 'Home', link: '/home' },
     { label: 'Market Place', link: '/marketPlace' },
     { label: 'Profile', link: '/profile' },
+    { label: 'Cart', link: '/cart' },
   ];
   navItemslogin = [
     { label: 'Home', link: '/home' },
