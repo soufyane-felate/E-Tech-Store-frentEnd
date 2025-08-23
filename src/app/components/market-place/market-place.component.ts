@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   ProductDto,
   ProductListService,
@@ -33,7 +34,7 @@ import { MatCardModule } from '@angular/material/card';
     NavbarComponent,
     NavbarComponent,
     MatCardModule
-],
+  ],
   templateUrl: './market-place.component.html',
   styleUrl: './market-place.component.css',
 })
@@ -51,7 +52,10 @@ export class MarketPlaceComponent implements OnInit {
     price: 0,
     categorie: '',
     etat: '',
+    imageUrl: '',
+    useImageUrl: false
   };
+  selectedFile: File | null = null;
 
   searchTerm: string = '';
   selectedCategory: string = '';
@@ -71,39 +75,71 @@ export class MarketPlaceComponent implements OnInit {
 
   toggleForm() {
     this.showAddForm = !this.showAddForm;
+    // إعادة تعيين النموذج عند التبديل
+    if (this.showAddForm) {
+      this.resetForm();
+    }
   }
 
-  onFileSelected(event: Event) {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
+  resetForm() {
+    this.newProduct = {
+      id: '',
+      name: '',
+      image: '',
+      description: '',
+      price: 0,
+      categorie: '',
+      etat: '',
+      imageUrl: '',
+      useImageUrl: false
+    };
+    this.selectedFile = null;
+    this.imageInputType = 'url';
+  }
 
+  onImageTypeChange() {
+    // إعادة تعيين الحقول عند تغيير نوع الصورة
+    if (this.imageInputType === 'url') {
+      this.selectedFile = null;
+    } else {
+      this.newProduct.imageUrl = '';
+    }
+  }
+
+  handleFileInput(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      this.selectedFile = fileInput.files[0];
+      // عرض معاينة الصورة (اختياري)
+      const reader = new FileReader();
       reader.onload = () => {
         this.newProduct.image = reader.result as string;
       };
-
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.selectedFile);
     }
   }
 
   submitProduct() {
-    this.productService.addProduct(this.newProduct).subscribe({
+    // تعيين useImageUrl بناءً على نوع الإدخال المحدد
+    this.newProduct.useImageUrl = this.imageInputType === 'url';
+
+    let productObservable: Observable<ProductDto>;
+
+    if (this.imageInputType === 'upload' && this.selectedFile) {
+      // استخدام تحميل الملف
+      productObservable = this.productService.addProduct(this.newProduct, this.selectedFile);
+    } else {
+      // استخدام رابط URL
+      productObservable = this.productService.addProduct(this.newProduct);
+    }
+
+    productObservable.subscribe({
       next: () => {
         this.loadProducts();
-        this.newProduct = {
-          id: '',
-          name: '',
-          image: '',
-          description: '',
-          price: 0,
-          categorie: '',
-          etat: '',
-        };
-        this.imageInputType = 'url';
+        this.resetForm();
         this.showAddForm = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         if (error.status === 403) {
           console.error('Error 403: Forbidden. Check user permissions or token validity.', error);
         } else {
@@ -121,32 +157,16 @@ export class MarketPlaceComponent implements OnInit {
 
       const matchesSearch = this.searchTerm
         ? product.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          product.description
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase())
+        product.description
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase())
         : true;
 
       return matchesCategory && matchesSearch;
     });
   }
 
-  handleFileInput(event: Event) {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files[0]) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.newProduct.image = reader.result as string;
-      };
-      reader.readAsDataURL(fileInput.files[0]);
-    }
-  }
   productDetails(product: ProductDto) {
-    product.image;
-    product.name;
-    product.description;
-    product.price;
-    product.categorie;
-    product.etat;
+    console.log('Product details:', product);
   }
 }
-

@@ -7,7 +7,7 @@
       <form class="d-flex" (submit)="$event.preventDefault()">
         <div class="input-group">
           <input class="form-control form-control-lg" type="search" placeholder="Search" [(ngModel)]="searchTerm"
-            (ngModelChange)="filterProduct()" name="searchTerm" aria-label="Search" />
+                 (ngModelChange)="filterProduct()" name="searchTerm" aria-label="Search" />
           <button class="btn btn-primary px-4" type="submit">
             <i class="bi bi-search"></i>
           </button>
@@ -20,7 +20,7 @@
     <button type="button" class="btn btn-dark" (click)="toggleForm()">Sell</button>
     <button type="button" class="btn btn-dark">Dark</button>
     <select class="form-select form-select-sm w-auto" [(ngModel)]="selectedCategory" (ngModelChange)="filterProduct()"
-      name="selectedCategory">
+            name="selectedCategory">
       <option value="">Categorie</option>
       <option value="SMARTPHONE">SMARTPHONE</option>
       <option value="COMPUTER">COMPUTER</option>
@@ -35,38 +35,40 @@
     <form (ngSubmit)="submitProduct()" class="row g-3">
       <div class="col-md-6">
         <input [(ngModel)]="newProduct.name" name="name" type="text" class="form-control" placeholder="Product Name"
-          required />
+               required />
       </div>
 
       <div class="col-md-12">
         <label class="form-label">Image Source</label>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="imageInputType" value="url" [(ngModel)]="imageInputType" />
+          <input class="form-check-input" type="radio" name="imageInputType" value="url" [(ngModel)]="imageInputType"
+                 (change)="onImageTypeChange()" />
           <label class="form-check-label">Use Image URL</label>
         </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" name="imageInputType" value="upload"
-            [(ngModel)]="imageInputType" />
+                 [(ngModel)]="imageInputType" (change)="onImageTypeChange()" />
           <label class="form-check-label">Upload from Device</label>
         </div>
       </div>
 
       <div class="col-md-6" *ngIf="imageInputType === 'url'">
-        <input [(ngModel)]="newProduct.image" name="image" type="text" class="form-control" placeholder="Image URL" />
+        <input [(ngModel)]="newProduct.imageUrl" name="imageUrl" type="text" class="form-control" placeholder="Image URL" />
       </div>
 
       <div class="col-md-6" *ngIf="imageInputType === 'upload'">
         <input type="file" class="form-control" (change)="handleFileInput($event)" accept="image/*" />
+        <small class="text-muted" *ngIf="selectedFile">Selected file: {{selectedFile.name}}</small>
       </div>
 
       <div class="col-12">
         <textarea [(ngModel)]="newProduct.description" name="description" class="form-control"
-          placeholder="Description"></textarea>
+                  placeholder="Description"></textarea>
       </div>
 
       <div class="col-md-6">
         <input [(ngModel)]="newProduct.price" name="price" type="number" class="form-control" placeholder="Price"
-          required />
+               required />
       </div>
 
       <div class="col-md-6">
@@ -90,6 +92,7 @@
       </div>
 
       <div class="col-12 text-end">
+        <button type="button" class="btn btn-secondary me-2" (click)="toggleForm()">Cancel</button>
         <button class="btn btn-success" type="submit">Submit</button>
       </div>
     </form>
@@ -99,8 +102,8 @@
     <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let product of filteredProducts">
       <mat-card class="h-100 shadow-sm product-card">
         <img mat-card-image
-          [src]="product.image || 'https://i.pinimg.com/736x/a2/9e/a1/a29ea132cb71b62cffbddcabf944aea5.jpg'"
-          alt="{{ product.name }}" class="img-fluid rounded-top medium-img" />
+             [src]="product.image || 'https://i.pinimg.com/736x/a2/9e/a1/a29ea132cb71b62cffbddcabf944aea5.jpg'"
+             alt="{{ product.name }}" class="img-fluid rounded-top medium-img" />
 
         <mat-card-header>
           <div mat-card-avatar class="badge-container">
@@ -115,9 +118,8 @@
           <small class="text-muted">par {{ product.categorie }}</small>
         </mat-card-content>
 
-<br>
-          <button class="btn btn-primary" [routerLink]="['/product-details', product.id]">product details</button>
-
+        <br>
+        <button class="btn btn-primary" [routerLink]="['/product-details', product.id]">product details</button>
       </mat-card>
     </div>
   </div>
