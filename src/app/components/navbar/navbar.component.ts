@@ -12,15 +12,17 @@ import { User } from '../../auth/user';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  isLoggedIn: boolean = localStorage.getItem('token') !== null;
+  isLoggedIn: boolean = false;
   currentUser: User | null = null;
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe((user: User | null) => {
       this.currentUser = user;
-      //this.isLoggedIn = !!user;
+      this.isLoggedIn = !!user;
+      this.isAdmin = user?.role === 'ADMIN';
     });
   }
 
@@ -28,14 +30,12 @@ export class NavbarComponent implements OnInit {
     { label: 'Home', link: '/home' },
     { label: 'Market Place', link: '/marketPlace' },
     { label: 'Profile', link: '/profile' },
-  ];
-  navItemslogin = [
-    { label: 'Home', link: '/home' },
-
+    { label: 'cart', link: '/cart' },
   ];
 
   logout(): void {
-    this.isLoggedIn = false;
     this.authService.logout();
+    this.isLoggedIn = false;
+    this.isAdmin = false;
   }
 }

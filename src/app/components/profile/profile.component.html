@@ -1,10 +1,24 @@
 <app-navbar></app-navbar>
-<div *ngIf="currentUser">
-  <h2>User Profile</h2>
-  <p><strong>Username:</strong> {{ currentUser.username }}</p>
-  <p><strong>Email:</strong> {{ currentUser.email }}</p>
-  <p *ngIf="currentUser.name"><strong>Name:</strong> {{ currentUser.name }}</p>
-</div>
-<div *ngIf="!currentUser">
-  <p>No user logged in.</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card" *ngIf="currentUser">
+        <div class="card-header">
+          <h3 class="text-center">User Profile</h3>
+        </div>
+        <div class="card-body text-center">
+          <img src="https://i.pinimg.com/736x/15/0f/a8/150fa8800b0a0d5633abc1d1c4db3d87.jpg" alt="Profile Picture" class="profile-picture rounded-circle mb-3">
+          <h5 class="card-title">{{ currentUser.name || 'N/A' }}</h5>
+          <p class="card-text"><strong>Username:</strong> {{ currentUser.username }}</p>
+          <p class="card-text"><strong>Email:</strong> {{ currentUser.email }}</p>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-primary">Edit Profile</button>
+        </div>
+      </div>
+      <div class="alert alert-warning" *ngIf="!currentUser">
+        <p class="text-center mb-0">No user logged in.</p>
+      </div>
+    </div>
+  </div>
 </div>

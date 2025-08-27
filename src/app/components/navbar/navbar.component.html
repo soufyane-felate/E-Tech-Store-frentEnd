@@ -13,6 +13,11 @@
               {{ item.label }}
             </a>
           </li>
+          <li *ngIf="isAdmin" class="nav-item">
+            <a class="nav-link text-light" routerLink="/admin/dashboard" routerLinkActive="active">
+              Dashboard
+            </a>
+          </li>
         </ul>
       </div>
     </ng-container>
